@@ -10,8 +10,5 @@ Menu: Start game
 No fancy way to exit just with CTRL + ^C 
 
 ## Arhitecture
-Files:
-game.py (only prints and the main class we call to play the game)
-models.py (dataclasses for player 1/2 and the game itself)
-logic.py (contains functions for displaying and logic)
+game.py (python file for running the game)
 
