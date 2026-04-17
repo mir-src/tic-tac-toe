@@ -5,7 +5,7 @@ class Game():
         self.display_menu()
     def start_game(self):
         players = ['1','2']
-        positions = {
+        pos = {
             '1': ['1','free'],
             '2': ['2','free'],
             '3': ['3','free'],
@@ -19,43 +19,70 @@ class Game():
         print("The game has started")
         turn = 1
         win = False
+        who_won = -1
+        f_play_cnt = 0 
+        s_play_cnt = 0
         while True:
-            self.display_board(positions)
+            self.display_board(pos)
             if turn == 1:
-                choice = input("It's time for player 1 to make a move (1-9): ")
-                if positions[choice][1] == 'free': 
-                    positions[choice][0] = 'O'
-                    positions[choice][1] = 'busy'
+                f_play_cnt += 1 
+                choice = input(str("It's time for player 1 to make a move (1-9): "))
+                if pos[choice][1] == 'free': 
+                    pos[choice][0] = 'O'
+                    pos[choice][1] = 'busy'
 
-                if win:
-                    print("Player 1 has won the game")
-                    break
             else:
-                self.display_board(positions)
+                s_play_cnt += 1
+                choice = input(str("It's time for player 2 to make a move (1-9): "))
+                if pos[choice][1] == 'free': 
+                    pos[choice][0] = 'X'
+                    pos[choice][1] = 'busy'
+
+            if pos['1'][0] == pos['2'][0] and pos['2'][0] == pos['3'][0]: 
+                win = True 
                 if turn == 1:
-                    choice = input("It's time for player 1 to make a move (1-9): ")
-                    if choice == '1':
-                        positions['a'] = 'X'
-                    elif choice == '2':
-                        positions['b'] = 'X'
-                    elif choice == '3':
-                        positions['c'] = 'X'
-                    elif choice == '4':
-                        positions['d'] = 'X'
-                    elif choice == '5':
-                        positions['e'] = 'X'
-                    elif choice == '6':
-                        positions['f'] = 'X'
-                    elif choice == '7':
-                        positions['g'] = 'X'
-                    elif choice == '8':
-                        positions['h'] = 'X'
-                    else:
-                        positions['i'] = 'X'
-                    turn = 2
-                    if win:
-                        print("Player 1 has won the game")
-                        break
+                    who_won = 1
+                else:
+                    who_won = 2
+            if pos['4'][0] == pos['5'][0] and pos['5'][0] == pos['6'][0]: 
+                win = True 
+                if turn == 1:
+                    who_won = 1
+                else:
+                    who_won = 2
+            if pos['7'][0] == pos['8'][0] and pos['8'][0] == pos['9'][0]: 
+                win = True 
+                if turn == 1:
+                    who_won = 1
+                else:
+                    who_won = 2
+            if pos['1'][0] == pos['5'][0] and pos['5'][0] == pos['9'][0]: 
+                win = True 
+                if turn == 1:
+                    who_won = 1
+                else:
+                    who_won = 2
+            if pos['3'][0] == pos['5'][0] and pos['5'][0] == pos['7'][0]: 
+                win = True 
+                if turn == 1:
+                    who_won = 1
+                else:
+                    who_won = 2
+
+            if turn <= 1:
+                turn += 1
+            else:  
+                turn -= 1
+
+            if win and who_won == 1:
+                print("Player 1 has won!")
+                break
+            elif win and who_won == 2:
+                print("Player 2 has won!")
+                break
+            elif not win and (): 
+                print("No one has won!")
+
         self.display_menu()
 
     def display_menu(self):
