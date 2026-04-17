@@ -1,14 +1,19 @@
 # Tic Tac Toe Game in Python
 
-## Description
-The first player has the first move (O), the second player has the second move (X), it's a turn based game, each player needs to make one straight line either diagonal (\ /) or vertical/horizontal (| -) to win the game. 
+## Installation 
 
-## MVP
-Player 1, Player 2
-1 game at a time, no score. 
-Menu: Start game 
-No fancy way to exit just with CTRL + ^C 
+Follow these steps to run the application on your local machine:   
 
-## Arhitecture
-game.py (python file for running the game)
+1. **Clone the repository** 
+    ``` bash
+    git clone [https://github.com/mir-src/tic-tac-toe.git](https://github.com/mir-src/tic-tac-toe.git)
+    cd tic-tac-toe
 
+2. **Launch the app** 
+    ```bash
+    python game.py
+
+## Author
+**mir-src**
+- 📧 Contact: [264200162+mir-src@users.noreply.github.com](mailto:264200162+mir-src@users.noreply.github.com)
+- Python Developer
