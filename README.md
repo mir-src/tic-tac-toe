@@ -6,7 +6,7 @@ Follow these steps to run the application on your local machine:
 
 1. **Clone the repository** 
     ``` bash
-    git clone [https://github.com/mir-src/tic-tac-toe.git](https://github.com/mir-src/tic-tac-toe.git)
+    git clone https://github.com/mir-src/tic-tac-toe.git
     cd tic-tac-toe
 
 2. **Launch the app** 
