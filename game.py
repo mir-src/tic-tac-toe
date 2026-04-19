@@ -1,131 +1,109 @@
-from dataclasses import dataclass
+from typing import Optional, List
 
-class Game():
+# Constants
+PLAYER_X  = "X"
+PLAYER_O = "O" 
+WINNING_COMBINATIONS = [
+    (0,1,2), (3,4,5), (6,7,8), # rows
+    (0,3,6), (1,4,7), (2,5,8), # columns
+    (0,4,8), (2,4,6)           # diagonals
+]
+
+class TicTacToe():
     def __init__(self):
-        self.display_menu()
-    def start_game(self):
-        players = ['1','2']
-        pos = {
-            '1': ['1','free'],
-            '2': ['2','free'],
-            '3': ['3','free'],
-            '4': ['4','free'],
-            '5': ['5','free'],
-            '6': ['6','free'],
-            '7': ['7','free'],
-            '8': ['8','free'],
-            '9': ['9','free'],
-        }
-        print("The game has started")
-        turn = 1
-        win = False
-        who_won = -1
-        f_play_cnt = 0 
-        s_play_cnt = 0
+        self.board: List[str] = [str(i) for i in range(1,10)]
+        self.current_player: str = PLAYER_X
+        self.winner: Optional[str] = None 
+        self.moves_count: int = 0
+
+    def display_board(self) -> None:
+        print("\n")
+        for i in range(0,9,3):
+            row = self.board[i:i+3]
+            print(" " + " | ".join(row))
+            if i < 6:
+                print("---+---+---")
+        print("\n")
+
+    def get_player_move(self) -> int:
         while True:
-            self.display_board(pos)
-            if turn == 1:
-                f_play_cnt += 1 
-                choice = input("It's time for player 1 to make a move (1-9): ")
-                if pos[choice][1] == 'free': 
-                    pos[choice][0] = 'O'
-                    pos[choice][1] = 'busy'
-                else:
+            try:
+                move = int(input(f"Player {self.current_player}, choose a cell (1-9): "))
+
+                if move < 1 or move > 9:
+                    print("Please enter anumber between 1 and 9.")
                     continue
-            else:
-                s_play_cnt += 1
-                choice = input("It's time for player 2 to make a move (1-9): ")
-                if pos[choice][1] == 'free': 
-                    pos[choice][0] = 'X'
-                    pos[choice][1] = 'busy'
-                else:
+                index = move - 1
+                if self.board[index] in (PLAYER_O,PLAYER_X):
+                    print("That cell is already take. Choose another one.")
                     continue
+                return index
+            except ValueError: 
+                print("Invalid input. Please enter a number.")
 
-            if (pos['1'][0] == pos['2'][0]) and (pos['2'][0] == pos['3'][0]): 
-                win = True 
-                if turn == 1:
-                    who_won = 1
-                else:
-                    who_won = 2
-            if (pos['4'][0] == pos['5'][0]) and (pos['5'][0] == pos['6'][0]): 
-                win = True 
-                if turn == 1:
-                    who_won = 1
-                else:
-                    who_won = 2
-            if (pos['7'][0] == pos['8'][0]) and (pos['8'][0] == pos['9'][0]): 
-                win = True 
-                if turn == 1:
-                    who_won = 1
-                else:
-                    who_won = 2
-            if (pos['1'][0] == pos['5'][0]) and (pos['5'][0] == pos['9'][0]): 
-                win = True 
-                if turn == 1:
-                    who_won = 1
-                else:
-                    who_won = 2
-            if (pos['3'][0] == pos['5'][0]) and (pos['5'][0] == pos['7'][0]): 
-                win = True 
-                if turn == 1:
-                    who_won = 1
-                else:
-                    who_won = 2
-            if (pos['1'][0] == pos['4'][0]) and (pos['4'][0] == pos['7'][0]): 
-                win = True 
-                if turn == 1:
-                    who_won = 1
-                else:
-                    who_won = 2
-            if (pos['2'][0] == pos['5'][0]) and (pos['5'][0] == pos['8'][0]): 
-                win = True 
-                if turn == 1:
-                    who_won = 1
-                else:
-                    who_won = 2
-            if (pos['3'][0] == pos['6'][0]) and (pos['6'][0] == pos['9'][0]): 
-                win = True 
-                if turn == 1:
-                    who_won = 1
-                else:
-                    who_won = 2
-            
-            if turn == 1:
-                turn = 2
-            else:
-                turn = 1
+    def make_move(self, index: int) -> None:
+        self.board[index] = self.current_player
+        self.moves_count += 1
 
-            if win and who_won == 1:
-                print("Player 1 has won!")
-                break
-            elif win and who_won == 2:
-                print("Player 2 has won!")
-                break
-            elif not win and (s_play_cnt + f_play_cnt >= 9): 
-                print("No one has won!")
-                break
+    def check_winner(self) -> Optional[str]:
+        for a,b,c in WINNING_COMBINATIONS:
+            if self.board[a] == self.board[b] == self.board[c]:
+                return self.board[a]
 
-        self.display_menu()
+        if self.moves_count == 9:
+            return "Draw" 
 
-    def display_menu(self):
-        print("---MENU---")
+        return None
+
+    def switch_player(self) -> None:
+        self.current_player = PLAYER_O if self.current_player == PLAYER_X else PLAYER_X
+
+    def play(self) -> None:
+        print("Welcome to my Tic-Tac-Toe game!")
+        while self.winner is None: 
+            self.display_board()
+            move_index = self.get_player_move()
+            self.make_move(move_index)
+            self.winner = self.check_winner()
+            if self.winner is None:
+                self.switch_player()
+
+        self.display_board()
+        if self.winner == 'Draw':
+            print("It's a draw!")
+        else:
+            print(f"Player {self.winner} wins! Congratulations!")
+
+def display_menu() -> None:
+    while True:
+        print("\n--- MENU ---")
         print("1. Start Game")
-        while True:
-            choice = input("Select Option: ")
-            if choice == '1':
-                self.start_game()
-                break
-            else:
-                print("Please select valid option!")
+        print("2. Quit")
+        choice = input("Select option: ")
+        if choice == '1':
+            game = TicTacToe()
+            game.play()
+        elif choice == '2':
+            print("Goodbye!")
+            break
+        else:
+            print("Invalid option. Please choose 1 or 2.")
+
+if __name__ == "__main__":
+    display_menu()
 
 
-    def display_board(self, pos: dict) -> str:
-        print(f"""
-        {pos['1'][0]} | {pos['2'][0]} | {pos['3'][0]}  
-        {pos['4'][0]} | {pos['5'][0]} | {pos['6'][0]}  
-        {pos['7'][0]} | {pos['8'][0]} | {pos['9'][0]}  
-        """)
 
-if __name__ == '__main__':    
-    play = Game() 
+
+
+
+                
+
+
+
+
+
+
+
+
   
